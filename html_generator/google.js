@@ -11,13 +11,13 @@
             return /android|Android/i.test(e) ? "android" : /iPad|iPhone|iPod|Macintosh/.test(e) && !window.MSStream ? "iOS" : "android";
 		}
    			
-   		var clickTag = "https://play.google.com/store/apps/details?id=com.lorybleur.bubbleshooter";
+   		var clickTag = "";
    		if (getMobileOS()=="iOS"){
-   			clickTag = "https://play.google.com/store/apps/details?id=com.lorybleur.bubbleshooter";
+   			clickTag = "";
    		}
    		window.failedIndex = 0; 
 
-		window.openStore = function() {
+		window.openStore = function(clickTag) {
 			ExitApi.exit(clickTag);
 		}
 

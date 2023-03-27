@@ -35,35 +35,10 @@ export default class GameController extends cc.Component {
             this.clickTag = this.defaultLink;
         }
 
-        /* switch(this.adNetWork) {
-            case 'adword': {
-                window.open(this.clickTag);
-                break;
-            }
-            case 'applovin': {
-                mraid.open(this.clickTag);
-                break;
-            }
-            case 'facebook': {
-                // FbPlayableAd.onCTAClick();
-                break;
-            }
-            case 'ironsource': {
-                dapi.openStoreUrl(this.clickTag);
-                break;
-            }
-            case 'unity': {
-                mraid.open(this.clickTag);
-                break;
-            }
-            case 'vungle': {
-                // callSDK('download');
-                break;
-            }
-            default: {
-                window.open(this.clickTag);
-            }
-        } */
-        window.openStore();
+        if(window.openStore) {
+            window.openStore(this.clickTag);
+        } else {
+            window.open(this.clickTag);
+        }
     }
 }

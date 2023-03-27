@@ -3,8 +3,8 @@
     </script>
    	<script>
    	   	window.failedIndex = 0; 
-		window.openStore = function() {
-			dapi.openStoreUrl();
+		window.openStore = function(clickTag) {
+			dapi.openStoreUrl(clickTag);
 		}
 	</script>  
 	<script type="text/javascript">

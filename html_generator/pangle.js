@@ -4,14 +4,14 @@
 			var e = navigator.userAgent || navigator.vendor || window.opera;
             return /android|Android/i.test(e) ? "android" : /iPad|iPhone|iPod|Macintosh/.test(e) && !window.MSStream ? "iOS" : "android";
 		}
-   		var clickTag = "https://play.google.com/store/apps/details?id=com.abi.draw.onepart.dop";
+   		var clickTag = "";
    		if (getMobileOS()=="iOS"){
-   			clickTag = "https://play.google.com/store/apps/details?id=com.abi.draw.onepart.dop";
+   			clickTag = "";
    		}
    		window.failedIndex = 0; 
 
-		window.openStore = function() {
-			  window.openAppStore();
+		window.openStore = function(clickTag) {
+			  window.openAppStore(clickTag);
 		}
 
 	</script>  
