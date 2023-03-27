@@ -165,18 +165,17 @@ p.footer {
 
   </style>
 
-  <script>
-	function gameStart() { 
-	};
-	function gameClose() { 
-	};
-   	window.failedIndex = 0; 
-	window.mintegral = true;
-	window.openStore = function() {
-		window.gameEnd && window.gameEnd();
-		 window.install && window.install();
-	}
+   <script>
 
+  function gameStart() { 
+  };
+  function gameClose() { 
+  };
+ 
+  window.openStore = function() {
+    window.gameEnd && window.gameEnd();
+     window.install && window.install();
+  }
   </script></head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
@@ -202,7 +201,7 @@ p.footer {
   </script>
 
   <!-- //main -->
-  <script type="text/javascript" charset="utf-8">
+ <script type="text/javascript" charset="utf-8">
     (function () {
 
     function boot () {
@@ -545,12 +544,12 @@ p.footer {
         cc.macro.CLEANUP_IMAGE_CACHE = true;
 
         boot();
+        window.gameReady && window.gameReady();
     }
 
 })();
 
   </script>
-
   <!-- //project -->
   <script type="text/javascript" charset="utf-8">
     window.__require=function t(o,e,r){function n(c,s){if(!e[c]){if(!o[c]){var a=c.split("/");if(a=a[a.length-1],!o[a]){var p="function"==typeof __require&&__require;if(!s&&p)return p(a,!0);if(i)return i(a,!0);throw new Error("Cannot find module '"+c+"'")}c=a}var l=e[c]={exports:{}};o[c][0].call(l.exports,function(t){return n(o[c][1][t]||t)},l,l.exports,t,o,e,r)}return e[c].exports}for(var i="function"==typeof __require&&__require,c=0;c<r.length;c++)n(r[c]);return n}({GameController:[function(t,o,e){"use strict";cc._RF.push(o,"16a42ktDGJFbbFPci/pSV8C","GameController");var r,n=this&&this.__extends||(r=function(t,o){return(r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,o){t.__proto__=o}||function(t,o){for(var e in o)Object.prototype.hasOwnProperty.call(o,e)&&(t[e]=o[e])})(t,o)},function(t,o){function e(){this.constructor=t}r(t,o),t.prototype=null===o?Object.create(o):(e.prototype=o.prototype,new e)}),i=this&&this.__decorate||function(t,o,e,r){var n,i=arguments.length,c=i<3?o:null===r?r=Object.getOwnPropertyDescriptor(o,e):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(t,o,e,r);else for(var s=t.length-1;s>=0;s--)(n=t[s])&&(c=(i<3?n(c):i>3?n(o,e,c):n(o,e))||c);return i>3&&c&&Object.defineProperty(o,e,c),c};Object.defineProperty(e,"__esModule",{value:!0});var c=cc._decorator,s=c.ccclass,a=(c.property,function(t){function o(){var o=null!==t&&t.apply(this,arguments)||this;return o.clickTag="",o.androidLink="https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game&gl=br",o.iosLink="",o.defaultLink="",o.adNetWork="ironsource",o}return n(o,t),o.prototype.onLoad=function(){},o.prototype.start=function(){},o.prototype.handleEventTouchStart=function(){console.log("touch start"),this.openAdUrl()},o.prototype.openAdUrl=function(){cc.sys.os==cc.sys.OS_ANDROID?this.clickTag=this.androidLink:cc.sys.os==cc.sys.OS_IOS?this.clickTag=this.iosLink:this.clickTag=this.defaultLink,window.openStore?window.openStore(this.clickTag):window.open(this.clickTag)},i([s],o)}(cc.Component));e.default=a,cc._RF.pop()},{}]},{},["GameController"]);
