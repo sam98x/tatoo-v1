@@ -1,0 +1,9 @@
+开发版本为cocos creator 2.1.2
+
+1. 点阵文件存放在CocosCreator安装文件夹下的resources\cocos2d-x\simulator\win32\bezier_dir\bezier_keypoint.txt
+
+2. 只做了3次贝塞尔曲线的生成
+
+3. 需要使用模拟器运行
+
+4. 保存的时候是在文件尾添加保存，注意清理bezier_keypoint.txt文件
