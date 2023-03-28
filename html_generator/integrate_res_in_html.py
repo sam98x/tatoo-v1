@@ -17,9 +17,12 @@ if sys.getdefaultencoding() != 'utf-8':
 settingMatchKey = '{#settings}'
 mainMatchKey = '{#main}'
 engineMatchKey = '{#cocosengine}'
+mintegralMatchKey = '{#mintegral}'
 projectMatchKey = '{#project}'
 resMapMatchKey = '{#resMap}'
 ttfMapMatchKey = '{#ttfMap}'
+
+mintegralScript = '''window.gameReady && window.gameReady();'''
 
 fileByteList = ['.png', '.jpg', '.mp3', '.ttf', '.plist', 'txt']
 additonjs = ["applovin.js", "google.js", "ironsource.js", "mintegral.js", "unity.js","vungle.js","facebook.js","pangle.js","adcolony.js"]
@@ -140,6 +143,8 @@ def integrate(projectRootPath):
 
     resStr = getResMapScript(resPath)
     htmlStr = htmlStr.replace(resMapMatchKey, resStr, 1)
+    htmlStr = htmlStr.replace(mintegralMatchKey, '''window.gameReady && window.gameReady();''', 1)
+
     writeToPath(newHtmlPath, htmlStr)
     for js in additonjs:
         if js.lower()=="pangle.js":
