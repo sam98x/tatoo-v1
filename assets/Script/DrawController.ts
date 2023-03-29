@@ -4,6 +4,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class DrawController extends cc.Component {
+    static instance: DrawController = null;
 
     @property(cc.Node)
     pen: cc.Node = null;
@@ -117,10 +118,24 @@ export default class DrawController extends cc.Component {
 
     private indexWaypoint: number = 1;
     private ratio: number = 98;
+    private tweenInit: cc.Tween = null;
+    private isAutoDraw: boolean = false;
+    private version: number = 1;
 
     onLoad () {
+        DrawController.instance = this;
+        const self = this;
+        cc.game.on(cc.game.EVENT_HIDE, function () {
+            self.pauseGame();
+        });
+
+        // For event when the app entering foreground
+        cc.game.on(cc.game.EVENT_SHOW, function () {
+            self.showGame();
+        });
         // this.pen.on(cc.Node.EventType.TOUCH_START, this.handleEventTouchStart, this);
         this.pen.on(cc.Node.EventType.TOUCH_MOVE, this.handleEventTouchMove, this);
+
         for (let i = 0; i < this.arrWaypoint.length; i++) {
             this.arrWaypoint[i].x *= this.ratio;
             this.arrWaypoint[i].y *= this.ratio;
@@ -128,33 +143,120 @@ export default class DrawController extends cc.Component {
         this.startDraw();
     }
 
-    handleEventTouchStart(event) {
+    private pauseGame(): void {
+        // console.log("pauseGame");
+    }
+
+    private showGame(): void {
+        console.log("showGame");
+        if (GameController.instance.isOpenLink && !this.isAutoDraw) {
+            this.tweenInit.stop();
+            this.clearCtx();
+            this.autoDraw();
+        }
+    }
+
+    private handleEventTouchStart(event): void {
         console.log(this.node.convertToNodeSpace(event.getLocation()));
     }
 
     private handleEventTouchMove(event): void {
-        const point = this.node.convertToNodeSpaceAR(event.getLocation());
-        this.pen.setPosition(point);
-        GameController.instance.openAdUrl();
-        this.updateDraw(point);
+        if (this.version == 1) {
+            GameController.instance.openAdUrl();
+        } else if (this.version === 2) {
+            const point = this.node.convertToNodeSpaceAR(event.getLocation());
+            this.pen.setPosition(point.x, point.y);
+            GameController.instance.openAdUrl();
+            this.updateDraw(point);
+        }
     }
 
     private startDraw(): void {
         this.ctx = this.node.getComponent(cc.Graphics);
-        this.ctx.lineWidth = 20;
-        this.ctx.strokeColor = cc.Color.RED;
+        this.ctx.lineWidth = 22;
+        this.ctx.strokeColor = cc.Color.BLACK;
         const x0: number = this.arrWaypoint[0].x;
         const y0: number = this.arrWaypoint[0].y;
-        this.pen.setPosition(x0, y0);
+        this.pen.setPosition(x0 + 125, y0 + 125);
         this.btnX.setPosition(x0, y0);
-        this.ctx.moveTo(x0, y0);
-        /*  for (let i = 1; i < this.arrWaypoint.length; i++) {
-            this.ctx.lineTo(this.arrWaypoint[i].x, this.arrWaypoint[i].y);
-        } */
-        this.ctx.stroke();
+        // this.ctx.moveTo(x0, y0);
+        // this.ctx.stroke();
+        const timeDelay = 0.2;
+        this.tweenInit = cc.tween(this.node)
+        .repeatForever(
+            cc.tween()
+            .call(() => {
+                this.ctx.moveTo(x0, y0);
+                this.ctx.lineTo(this.arrWaypoint[1].x, this.arrWaypoint[1].y);
+                this.ctx.stroke();
+                this.btnX.setPosition(x0, y0);
+                this.pen.setPosition(x0 + 125, y0 + 125);
+            })
+            .delay(timeDelay)
+            .call(() => {
+                this.ctx.lineTo(this.arrWaypoint[2].x, this.arrWaypoint[2].y);
+                this.ctx.stroke();
+                this.btnX.setPosition(this.arrWaypoint[2].x, this.arrWaypoint[2].y);
+                this.pen.setPosition(this.arrWaypoint[2].x + 125, this.arrWaypoint[2].y + 125);
+            })
+            .delay(timeDelay)
+            .call(() => {
+                this.ctx.lineTo(this.arrWaypoint[3].x, this.arrWaypoint[3].y);
+                this.ctx.stroke();
+                this.btnX.setPosition(this.arrWaypoint[3].x, this.arrWaypoint[3].y);
+                this.pen.setPosition(this.arrWaypoint[3].x + 125, this.arrWaypoint[3].y + 125);
+            })
+            .delay(timeDelay)
+            .call(() => {
+                this.ctx.lineTo(this.arrWaypoint[4].x, this.arrWaypoint[4].y);
+                this.ctx.stroke();
+                this.btnX.setPosition(this.arrWaypoint[4].x, this.arrWaypoint[4].y);
+                this.pen.setPosition(this.arrWaypoint[4].x + 125, this.arrWaypoint[4].y + 125);
+            })
+            .delay(timeDelay)
+            .call(() => {
+                this.clearCtx();
+            })
+        )
+
+        this.tweenInit.start();
+
+        // this.autoDraw();
     }
 
-    private updateDraw(point: cc.Vec2) {
+    public clearCtx (): void {
+        const x0: number = this.arrWaypoint[0].x;
+        const y0: number = this.arrWaypoint[0].y;
+        this.ctx.clear();
+        this.btnX.setPosition(x0, y0);
+        this.ctx.moveTo(x0, y0);
+        this.pen.setPosition(x0 + 125, y0 + 125);
+    }
+
+    private autoDraw (): void {
+        this.isAutoDraw = true;
+        for (let i = 1; i < this.arrWaypoint.length; i++) {
+            setTimeout(() => {
+                const pointNext = this.arrWaypoint[i];
+                this.ctx.lineTo(pointNext.x, pointNext.y);
+                this.ctx.stroke();
+                this.btnX.setPosition(pointNext);
+                this.pen.setPosition(pointNext.x + 125, pointNext.y + 125);
+                if (i === this.arrWaypoint.length - 1) {
+                    GameController.instance.clickBtnDone();
+                    cc.tween(this.node)
+                    .delay(1)
+                    .call(() => {
+                        GameController.instance.activeStep2(false);
+                        GameController.instance.activeStep2(true);
+                    })
+                    .start();
+                }
+            }, i * 100);
+        }
+    }
+
+    private updateDraw(point: cc.Vec2): void {
         if (this.indexWaypoint === this.arrWaypoint.length) {
             cc.tween(this.node)
             .delay(1)
@@ -162,11 +264,11 @@ export default class DrawController extends cc.Component {
                 GameController.instance.activeStep2(false);
                 GameController.instance.activeStep2(true);
             })
-            .start()
+            .start();
             return;
         }
         const pointNext = this.arrWaypoint[this.indexWaypoint];
-        const distance = this.calDistanceVector2(point.x, point.y, pointNext.x, pointNext.y);
+        const distance = this.calDistanceVector2(point.x, point.y, pointNext.x + 125, pointNext.y + 125);
         if (distance > 25) return;
         this.btnX.setPosition(pointNext);
         this.ctx.lineTo(pointNext.x, pointNext.y);
@@ -175,7 +277,7 @@ export default class DrawController extends cc.Component {
     }
 
     private calDistanceVector2(x1, y1, x2, y2): number {
-        return Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
+        return Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
     }
 
     start () {
