@@ -1,3 +1,4 @@
+import DrawController from './DrawController';
 
 const {ccclass, property} = cc._decorator;
 
@@ -39,15 +40,26 @@ export default class GameController extends cc.Component {
     @property(cc.AudioClip)
     audioDone: cc.AudioClip = null;
 
+    @property(cc.Node)
+    nodeTapToPlay: cc.Node = null;
+
     private tweenHand: cc.Tween = null;
     private clickTag: string = '';
     private androidLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game&gl=br';
     private iosLink: string = '';
     private defaultLink: string = '';
     public isOpenLink: boolean = false;
-
+    public tweenTap: cc.Tween = null;
     onLoad () {
         GameController.instance = this;
+        this.tweenTap = cc.tween(this.nodeTapToPlay)
+        .repeatForever(
+            cc.tween(this.nodeTapToPlay)
+            .to(0.4, {opacity: 0})
+            .to(0.4, {opacity: 255})
+        )
+        this.tweenTap.start();
+
         this.tweenHand = cc.tween(this.hand)
         .repeatForever(
             cc.tween(this.hand)
@@ -71,6 +83,7 @@ export default class GameController extends cc.Component {
     }
 
     public openAdUrl (): void {
+        console.log('openurl');
         if (!this.isOpenLink || this.step2.active) {
             this.clickBtnPlay();
             this.isOpenLink = true;
@@ -86,6 +99,14 @@ export default class GameController extends cc.Component {
                 window.openStore(this.clickTag);
             } else {
                 window.open(this.clickTag);
+            }
+        } else if (this.isOpenLink && !DrawController.instance.isAutoDraw) {
+            DrawController.instance.tweenInit.stop();
+            DrawController.instance.clearCtx();
+            this.tweenTap.stop();
+            this.nodeTapToPlay.active = false;
+            if (DrawController.instance.version == 1) {
+                DrawController.instance.autoDraw();
             }
         }
     }
