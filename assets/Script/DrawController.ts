@@ -341,6 +341,7 @@ export default class DrawController extends cc.Component {
     }
 
     private drawDone(): void {
+        GameController.instance.stopAudioPen();
         GameController.instance.clickBtnDone();
         // this.createFireWork();
         cc.tween(this.node)

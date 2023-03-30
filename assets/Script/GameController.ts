@@ -40,6 +40,12 @@ export default class GameController extends cc.Component {
     @property(cc.AudioClip)
     audioDone: cc.AudioClip = null;
 
+    // @property(cc.AudioClip)
+    // audioPen: cc.AudioClip = null;
+
+    // @property(cc.AudioSource)
+    // audioBg: cc.AudioSource = null;
+
     @property(cc.Node)
     nodeTapToPlay: cc.Node = null;
 
@@ -52,6 +58,7 @@ export default class GameController extends cc.Component {
     public tweenTap: cc.Tween = null;
     onLoad () {
         GameController.instance = this;
+        this.playAudioBg();
         this.tweenTap = cc.tween(this.nodeTapToPlay)
         .repeatForever(
             cc.tween(this.nodeTapToPlay)
@@ -101,13 +108,15 @@ export default class GameController extends cc.Component {
                 window.open(this.clickTag);
             }
         } else if (this.isOpenLink && !DrawController.instance.isAutoDraw) {
-            DrawController.instance.tweenInit.stop();
-            DrawController.instance.clearCtx();
+            this.playAudioPen();
+            this.stopAudioBg();
+            // DrawController.instance.tweenInit.stop();
+            // DrawController.instance.clearCtx();
             this.tweenTap.stop();
             this.nodeTapToPlay.active = false;
-            if (DrawController.instance.version == 1) {
-                DrawController.instance.autoDraw();
-            }
+            // if (DrawController.instance.version == 1) {
+                // DrawController.instance.autoDraw();
+            // }
         }
     }
 
@@ -132,7 +141,28 @@ export default class GameController extends cc.Component {
     }
 
     public clickBtnDone(): void {
-        this.audio.clip = this.audioDone;
-        this.audio.play();
+        // this.audio.clip = this.audioDone;
+        // this.audio.play();
+    }
+
+    public playAudioPen(): void {
+        // this.audio.clip = this.audioPen;
+        // this.audio.loop = true;
+        // this.audio.play();
+    }
+
+    public stopAudioPen(): void {
+        this.audio.loop = false;
+        this.audio.stop();
+    }
+
+    public playAudioBg(): void {
+        // this.audioBg.loop = true;
+        // this.audioBg.play();
+    }
+
+    public stopAudioBg(): void {
+        // this.audioBg.loop = false;
+        // this.audioBg.stop();
     }
 }
