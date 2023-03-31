@@ -109,7 +109,8 @@ export default class GameController extends cc.Component {
             }
         } else if (this.isOpenLink && !DrawController.instance.isAutoDraw) {
             this.playAudioPen();
-            this.stopAudioBg();
+            // this.stopAudioBg();
+            this.downVolumnBg();
             DrawController.instance.tweenInit.stop();
             DrawController.instance.clearCtx();
             this.tweenTap.stop();
@@ -164,5 +165,9 @@ export default class GameController extends cc.Component {
     public stopAudioBg(): void {
         this.audioBg.loop = false;
         this.audioBg.stop();
+    }
+
+    public downVolumnBg(): void {
+        this.audioBg.volume = 0.8;
     }
 }

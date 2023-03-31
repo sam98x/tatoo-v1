@@ -276,7 +276,7 @@ export default class DrawController extends cc.Component {
                         this.ctx.moveTo(x0, y0);
                         this.ctx.lineTo(this.arrWaypoint[1].x, this.arrWaypoint[1].y);
                         this.ctx.stroke();
-                        this.btnX.setPosition(x0, y0);
+                        // this.btnX.setPosition(x0, y0);
                         this.pen.setPosition(x0 + 125, y0 + 125);
                     })
                     .delay(timeDelay)
@@ -313,7 +313,7 @@ export default class DrawController extends cc.Component {
         const x0: number = this.arrWaypoint[0].x;
         const y0: number = this.arrWaypoint[0].y;
         this.ctx.clear();
-        this.btnX.setPosition(x0, y0);
+        // this.btnX.setPosition(x0, y0);
         this.ctx.moveTo(x0, y0);
         this.pen.setPosition(x0 + 125, y0 + 125);
     }
@@ -323,20 +323,25 @@ export default class DrawController extends cc.Component {
         for (let i = 1; i < this.arrWaypoint.length; i++) {
             setTimeout(() => {
                 const pointNext = this.arrWaypoint[i];
-                this.btnX.setPosition(pointNext);
+
+               /*  this.btnX.setPosition(pointNext);
                 cc.tween(this.btnX)
                 .to(0.05, {position: cc.v3(pointNext.x, pointNext.y, 0)})
-                .start();
+                .start(); */
                 // this.pen.setPosition(pointNext.x + 125, pointNext.y + 125);
-                cc.tween(this.pen)
-                .to(0.05, {position: cc.v3(pointNext.x + 125, pointNext.y + 125, 0)})
-                .start();
+                if (i < this.arrWaypoint.length - 1) {
+                    const pointNext2 = this.arrWaypoint[i + 1];
+                    cc.tween(this.pen)
+                    .to(0.05, {position: cc.v3(pointNext2.x + 125, pointNext2.y + 125, 0)})
+                    .start();
+                }
+
                 this.ctx.lineTo(pointNext.x, pointNext.y);
                 this.ctx.stroke();
                 if (i === this.arrWaypoint.length - 1) {
                     this.drawDone();
                 }
-            }, i * 50);
+            }, i * 30);
         }
     }
 
@@ -374,7 +379,7 @@ export default class DrawController extends cc.Component {
     private drawPoint(x, y): void {
         this.ctx.lineTo(x, y);
         this.ctx.stroke();
-        this.btnX.setPosition(x, y);
+        // this.btnX.setPosition(x, y);
         this.pen.setPosition(x + 125, y + 125);
     }
 
