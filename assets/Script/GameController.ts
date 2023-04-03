@@ -50,10 +50,10 @@ export default class GameController extends cc.Component {
     nodeTapToPlay: cc.Node = null;
 
     private tweenHand: cc.Tween = null;
-    private clickTag: string = '';
-    private androidLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game&gl=br';
-    private iosLink: string = '';
-    private defaultLink: string = '';
+    private clickTag: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
+    private androidLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
+    private iosLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
+    private defaultLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
     public isOpenLink: boolean = false;
     public tweenTap: cc.Tween = null;
     onLoad () {
@@ -103,7 +103,7 @@ export default class GameController extends cc.Component {
             }
     
             if(window.openStore) {
-                window.openStore(this.clickTag);
+                window.openStore();
             } else {
                 window.open(this.clickTag);
             }

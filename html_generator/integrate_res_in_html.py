@@ -102,9 +102,9 @@ def writeNetHtml(js, html,name="index.html"):
 	newhtml = html[:i] + jsContent + html[i:]
 	if "google" in js.lower():
 		newhtml = newhtml.replace('<meta name="ad.size" content="width=100%,height=100%">','<meta name="ad.size" content="width=320,height=480">')
-	if any(w in js.lower() for w in ["unity","ironsource"]):
+	""" if any(w in js.lower() for w in ["unity","ironsource"]):
 		newhtml = newhtml.replace("(function ()", "function startGame()",1)
-		newhtml = "}".join(newhtml.rsplit("})();", 1))
+		newhtml = "}".join(newhtml.rsplit("})();", 1)) """
 
 	writeToPath(newpath,newhtml)
 

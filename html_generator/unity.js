@@ -10,13 +10,13 @@
             return /android|Android/i.test(e) ? "android" : /iPad|iPhone|iPod|Macintosh/.test(e) && !window.MSStream ? "iOS" : "android";
 		}
    			
-   		var clickTag = "";
+   		var clickTag = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
    		if (getMobileOS()=="iOS"){
-   			clickTag = "";
+   			clickTag = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
    		}
    		window.failedIndex = 0; 
 
-		window.openStore = function(clickTag) {
+		window.openStore = function() {
 			mraid.open(clickTag);
 		}
 	</script>  
@@ -41,7 +41,7 @@
 		} 	
 	}
 	function showMyAd(){
-		startGame();
+		// startGame();
 	}
 
 </script>
