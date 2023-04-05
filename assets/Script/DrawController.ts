@@ -16,6 +16,7 @@ export default class DrawController extends cc.Component {
     step1: cc.Node = null;
 
     ctx: cc.Graphics = null;
+    
     private arrWaypoint2 = [
         cc.v2(-0.20, 0.180),
         cc.v2(-0.42, 0.340),
@@ -201,7 +202,10 @@ export default class DrawController extends cc.Component {
     private ratio: number = 98;
     public tweenInit: cc.Tween = null;
     public isAutoDraw: boolean = false;
-    public version: number = 1;
+    public version: number = 3;
+    public isStartDraw: boolean = false;
+    private tweenBtnX: Function = null;
+    private isStartingDraw: boolean = false;
 
     onLoad() {
         DrawController.instance = this;
@@ -210,13 +214,28 @@ export default class DrawController extends cc.Component {
             self.pauseGame();
         });
 
+        this.tweenBtnX = () => cc.tween(this.btnX)
+        .repeatForever(
+            cc.tween(this.btnX)
+            .to(0.5, {scale: 1.3})
+            .to(0.5, {scale: 1})
+        )
+
         // For event when the app entering foreground
         cc.game.on(cc.game.EVENT_SHOW, function () {
             self.showGame();
         });
-        // this.pen.on(cc.Node.EventType.TOUCH_START, this.handleEventTouchStart, this);
+
         if (this.version == 2) {
+            this.pen.on(cc.Node.EventType.TOUCH_START, this.handleEventTouchStart, this);
             this.pen.on(cc.Node.EventType.TOUCH_MOVE, this.handleEventTouchMove, this);
+            this.pen.on(cc.Node.EventType.TOUCH_END, this.handleEventTouchEnd, this);
+        }
+
+        if (this.version == 3) {
+            this.step1.on(cc.Node.EventType.TOUCH_START, this.handleEventTouchStart, this);
+            this.step1.on(cc.Node.EventType.TOUCH_MOVE, this.handleEventTouchMove, this);
+            this.step1.on(cc.Node.EventType.TOUCH_END, this.handleEventTouchEnd, this);
         }
 
         for (let i = 0; i < this.arrWaypoint.length; i++) {
@@ -243,8 +262,15 @@ export default class DrawController extends cc.Component {
         } */
     }
 
-    private handleEventTouchStart(event): void {
-        console.log(this.node.convertToNodeSpace(event.getLocation()));
+    private handleEventTouchStart(): void {
+        this.isStartingDraw = true;
+        GameController.instance.playAudioPen();
+        if (!this.isStartDraw) {
+            this.isStartDraw = true;
+            // this.tweenBtnX().start();
+            GameController.instance.startDraw();
+        }
+
     }
 
     private handleEventTouchMove(event): void {
@@ -253,9 +279,14 @@ export default class DrawController extends cc.Component {
         } else if (this.version === 2) {
             const point = this.node.convertToNodeSpaceAR(event.getLocation());
             this.pen.setPosition(point.x, point.y);
-            GameController.instance.openAdUrl();
             this.updateDraw(point);
-        }
+        } 
+    }
+
+    private handleEventTouchEnd(): void {
+        console.log('end');
+        this.isStartingDraw = false;
+        GameController.instance.stopAudioPen();
     }
 
     private startDraw(): void {
@@ -352,7 +383,7 @@ export default class DrawController extends cc.Component {
         cc.tween(this.node)
             .delay(1)
             .call(() => {
-                GameController.instance.activeStep2(false);
+                GameController.instance.activeStep1(false);
                 GameController.instance.activeStep2(true);
             })
             .start();
@@ -402,5 +433,21 @@ export default class DrawController extends cc.Component {
         particleSystem.autoRemoveOnFinish = true;
     }
 
-    // update (dt) {}
+    private updateDraw2(): void {
+        if (this.indexWaypoint === this.arrWaypoint.length) {
+            this.drawDone();
+            return;
+        }
+        const pointNext = this.arrWaypoint[this.indexWaypoint];
+        this.pen.setPosition(pointNext.x + 125, pointNext.y + 125);
+        this.ctx.lineTo(pointNext.x, pointNext.y);
+        this.ctx.stroke();
+        this.indexWaypoint++;
+    }
+
+    update (dt) {
+        if (this.isStartingDraw) {
+            this.updateDraw2();
+        }
+    }
 }

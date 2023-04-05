@@ -12,7 +12,7 @@
    			
    		var clickTag = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
    		if (getMobileOS()=="iOS"){
-   			clickTag = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
+   			clickTag = 'https://apps.apple.com/us/app/cooking-rush-restaurant-game/id1623992858';
    		}
    		window.failedIndex = 0; 
 

@@ -1,6 +1,6 @@
 import DrawController from './DrawController';
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameController extends cc.Component {
@@ -56,41 +56,42 @@ export default class GameController extends cc.Component {
     private defaultLink: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
     public isOpenLink: boolean = false;
     public tweenTap: cc.Tween = null;
-    onLoad () {
+    public isPlayAudioPen: boolean = false;
+
+    onLoad() {
         GameController.instance = this;
         // this.playAudioBg();
         this.tweenTap = cc.tween(this.nodeTapToPlay)
-        .repeatForever(
-            cc.tween(this.nodeTapToPlay)
-            .to(0.4, {opacity: 0})
-            .to(0.4, {opacity: 255})
-        )
+            .repeatForever(
+                cc.tween(this.nodeTapToPlay)
+                    .to(0.4, { opacity: 0 })
+                    .to(0.4, { opacity: 255 })
+            )
         this.tweenTap.start();
 
         this.tweenHand = cc.tween(this.hand)
-        .repeatForever(
-            cc.tween(this.hand)
-            .to(0.5, {position: cc.v3(this.violetBtn.position.x, this.violetBtn.position.y - this.violetBtn.height / 2, 0)})
-            .call(() => {
-                this.color.string = "Violet";
-            })
-            .delay(1)
-            .to(0.5, {position: cc.v3(this.yellowBtn.position.x, this.yellowBtn.position.y - this.yellowBtn.height / 2, 0)})
-            .call(() => {
-                this.color.string = "Yellow";
-            })
-            .delay(1)
-            .to(0.5, {position: cc.v3(this.blueBtn.position.x, this.blueBtn.position.y - this.blueBtn.height / 2, 0)})
-            .call(() => {
-                this.color.string = "Blue";
-            })
-            .delay(1)
-        )
+            .repeatForever(
+                cc.tween(this.hand)
+                    .to(0.5, { position: cc.v3(this.violetBtn.position.x, this.violetBtn.position.y - this.violetBtn.height / 2, 0) })
+                    .call(() => {
+                        this.color.string = "Violet";
+                    })
+                    .delay(1)
+                    .to(0.5, { position: cc.v3(this.yellowBtn.position.x, this.yellowBtn.position.y - this.yellowBtn.height / 2, 0) })
+                    .call(() => {
+                        this.color.string = "Yellow";
+                    })
+                    .delay(1)
+                    .to(0.5, { position: cc.v3(this.blueBtn.position.x, this.blueBtn.position.y - this.blueBtn.height / 2, 0) })
+                    .call(() => {
+                        this.color.string = "Blue";
+                    })
+                    .delay(1)
+            )
         this.tweenHand.start();
     }
 
-    public openAdUrl (): void {
-        console.log('openurl');
+    public openAdUrl(): void {
         if (!this.isOpenLink || this.step2.active) {
             this.clickBtnPlay();
             this.isOpenLink = true;
@@ -101,27 +102,30 @@ export default class GameController extends cc.Component {
             } else {
                 this.clickTag = this.defaultLink;
             }
-    
-            if(window.openStore) {
+
+            if (window.openStore) {
                 window.openStore();
             } else {
                 window.open(this.clickTag);
             }
-        } else if (this.isOpenLink && !DrawController.instance.isAutoDraw) {
-            this.playAudioPen();
-            // this.stopAudioBg();
-            this.downVolumnBg();
-            DrawController.instance.tweenInit.stop();
-            DrawController.instance.clearCtx();
-            this.tweenTap.stop();
-            this.nodeTapToPlay.active = false;
+        } else if (this.isOpenLink && !DrawController.instance.isAutoDraw && DrawController.instance.version === 1) {
+            this.startDraw();
             if (DrawController.instance.version == 1) {
                 DrawController.instance.autoDraw();
             }
         }
     }
 
-    private activeStep1(value: boolean): void {
+    public startDraw(): void {
+        this.playAudioBg();
+        this.downVolumnBg();
+        DrawController.instance.tweenInit.stop();
+        DrawController.instance.clearCtx();
+        this.tweenTap.stop();
+        this.nodeTapToPlay.active = false;
+    }
+
+    public activeStep1(value: boolean): void {
         this.step1.active = value;
     }
 
@@ -147,14 +151,20 @@ export default class GameController extends cc.Component {
     }
 
     public playAudioPen(): void {
-        this.audio.clip = this.audioPen;
-        this.audio.loop = true;
-        this.audio.play();
+        if (!this.isPlayAudioPen) {
+            this.isPlayAudioPen = true;
+            this.audio.clip = this.audioPen;
+            this.audio.loop = true;
+            this.audio.play();
+        };
     }
 
     public stopAudioPen(): void {
-        this.audio.loop = false;
-        this.audio.stop();
+        if (this.isPlayAudioPen) {
+            this.isPlayAudioPen = false;
+            this.audio.loop = false;
+            this.audio.stop();
+        };
     }
 
     public playAudioBg(): void {
