@@ -15,6 +15,9 @@ export default class DrawController extends cc.Component {
     @property(cc.Node)
     step1: cc.Node = null;
 
+    @property(cc.Node)
+    sprite: cc.Node = null;
+
     ctx: cc.Graphics = null;
     
     private arrWaypoint2 = [
@@ -238,6 +241,8 @@ export default class DrawController extends cc.Component {
             this.step1.on(cc.Node.EventType.TOUCH_END, this.handleEventTouchEnd, this);
         }
 
+        this.sprite.on(cc.Node.EventType.TOUCH_MOVE, this.handleEventTouchMove2, this);
+
         for (let i = 0; i < this.arrWaypoint.length; i++) {
             this.arrWaypoint[i].x *= this.ratio;
             this.arrWaypoint[i].y *= this.ratio;
@@ -271,6 +276,13 @@ export default class DrawController extends cc.Component {
             GameController.instance.startDraw();
         }
 
+    }
+
+    handleEventTouchMove2(): void {
+        this.ctx = this.node.getComponent(cc.Graphics);
+        this.ctx.lineWidth = 22;
+        this.ctx.strokeColor = cc.Color.BLACK;
+        
     }
 
     private handleEventTouchMove(event): void {
