@@ -25,8 +25,8 @@ export default class GameController extends cc.Component {
     @property(cc.Node)
     blueBtn: cc.Node = null;
 
-    @property(cc.Label)
-    color: cc.Label = null;
+    // @property(cc.Label)
+    // color: cc.Label = null;
 
     @property(cc.AudioSource)
     audio: cc.AudioSource = null;
@@ -47,7 +47,16 @@ export default class GameController extends cc.Component {
     audioBg: cc.AudioSource = null;
 
     @property(cc.Node)
-    nodeTapToPlay: cc.Node = null;
+    mode: cc.Node = null;
+
+    @property([cc.SpriteFrame])
+    arrCharacter: cc.SpriteFrame[] = [];
+
+    @property(cc.Sprite)
+    character: cc.Sprite = null;
+
+    // @property(cc.Node)
+    // nodeTapToPlay: cc.Node = null;
 
     private tweenHand: cc.Tween = null;
     private clickTag: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
@@ -61,30 +70,34 @@ export default class GameController extends cc.Component {
     onLoad() {
         GameController.instance = this;
         // this.playAudioBg();
-        this.tweenTap = cc.tween(this.nodeTapToPlay)
+       /*  this.tweenTap = cc.tween(this.nodeTapToPlay)
             .repeatForever(
                 cc.tween(this.nodeTapToPlay)
                     .to(0.4, { opacity: 0 })
                     .to(0.4, { opacity: 255 })
-            )
-        this.tweenTap.start();
-
+            ) */
+            
+        // this.tweenTap.start();
+        this.hand.setPosition(this.violetBtn.position.x, this.mode.y);
         this.tweenHand = cc.tween(this.hand)
             .repeatForever(
                 cc.tween(this.hand)
-                    .to(0.5, { position: cc.v3(this.violetBtn.position.x, this.violetBtn.position.y - this.violetBtn.height / 2, 0) })
+                    .to(0.5, { position: cc.v3(this.violetBtn.position.x, this.mode.y, 0) })
                     .call(() => {
-                        this.color.string = "Violet";
+                        // this.color.string = "Violet";
+                        // this.character.spriteFrame = this.arrCharacter[0];
                     })
                     .delay(1)
-                    .to(0.5, { position: cc.v3(this.yellowBtn.position.x, this.yellowBtn.position.y - this.yellowBtn.height / 2, 0) })
+                    .to(0.5, { position: cc.v3(this.yellowBtn.position.x, this.mode.y, 0) })
                     .call(() => {
-                        this.color.string = "Yellow";
+                        // this.color.string = "Yellow";
+                        // this.character.spriteFrame = this.arrCharacter[1];
                     })
                     .delay(1)
-                    .to(0.5, { position: cc.v3(this.blueBtn.position.x, this.blueBtn.position.y - this.blueBtn.height / 2, 0) })
+                    .to(0.5, { position: cc.v3(this.blueBtn.position.x, this.mode.y, 0) })
                     .call(() => {
-                        this.color.string = "Blue";
+                        // this.color.string = "Blue";
+                        // this.character.spriteFrame = this.arrCharacter[2];
                     })
                     .delay(1)
             )
@@ -121,8 +134,8 @@ export default class GameController extends cc.Component {
         this.downVolumnBg();
         DrawController.instance.tweenInit.stop();
         DrawController.instance.clearCtx();
-        this.tweenTap.stop();
-        this.nodeTapToPlay.active = false;
+        // this.tweenTap.stop();
+        // this.nodeTapToPlay.active = false;
     }
 
     public activeStep1(value: boolean): void {
