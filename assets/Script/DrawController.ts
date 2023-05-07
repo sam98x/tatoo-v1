@@ -29,7 +29,7 @@ export default class DrawController extends cc.Component {
 
     private arrWaypoint = Duck[0]
 
-    private indexWaypoint: number = 1;
+    public indexWaypoint: number = 0;
     private ratio: number = 98;
     public tweenInit1: cc.Tween = null;
     public isAutoDraw: boolean = false;
@@ -82,12 +82,8 @@ export default class DrawController extends cc.Component {
             this.step1.on(cc.Node.EventType.TOUCH_END, this.handleEventTouchEnd, this);
         }
 
-        this.dataWayPoint = Roblox;
-        this.arrWaypoint = this.dataWayPoint[0];
-
-        console.log(this.arrWaypoint);
-
         this.startDraw();
+        // this.setDataCharacter1();
     }
 
     private pauseGame(): void {
@@ -214,7 +210,7 @@ export default class DrawController extends cc.Component {
         this.graphics.addChild(nodeNew);
         nodeNew.addComponent(cc.Graphics);
         this.ctx = nodeNew.getComponent(cc.Graphics);
-        this.ctx.lineWidth = 18;
+        this.ctx.lineWidth = 19;
         this.ctx.strokeColor = cc.Color.BLACK;
         const x0: number = this.arrWaypoint[0].x;
         const y0: number = this.arrWaypoint[0].y;
@@ -260,9 +256,9 @@ export default class DrawController extends cc.Component {
     }
 
     private nextWay(): void {
-        console.log('next');
+        console.log('next ', this.indexWayCurrent);
         this.indexWaypoint = 0;
-        this.arrWaypoint = this.dataWayPoint[this.indexWayCurrent];
+        this.arrWaypoint = this.dataWayPoint[this.indexWayCurrent - 1];
         this.initGraphic();
     }
 
@@ -275,6 +271,7 @@ export default class DrawController extends cc.Component {
             .call(() => {
                 GameController.instance.activeStep1(false);
                 GameController.instance.activeStep2(true);
+                GameController.instance.openStore();
             })
             .start();
     }

@@ -117,17 +117,20 @@ export default class GameController extends cc.Component {
             } else {
                 this.clickTag = this.defaultLink;
             }
-
-            if (window.openStore) {
-                window.openStore();
-            } else {
-                window.open(this.clickTag);
-            }
+            this.openStore();
         } else if (this.isOpenLink && !DrawController.instance.isAutoDraw && DrawController.instance.version === 1) {
             this.startDraw();
             if (DrawController.instance.version == 1) {
                 DrawController.instance.autoDraw();
             }
+        }
+    }
+
+    public openStore(): void {
+        if (window.openStore) {
+            window.openStore();
+        } else {
+            window.open(this.clickTag);
         }
     }
 
@@ -137,7 +140,8 @@ export default class GameController extends cc.Component {
 
         // DrawController.instance.tweenInit1.stop();
 
-        DrawController.instance.clearCtx();
+        // DrawController.instance.clearCtx();
+
         // this.tweenTap.stop();
         // this.nodeTapToPlay.active = false;
     }
@@ -198,7 +202,28 @@ export default class GameController extends cc.Component {
         this.audioBg.volume = 0.8;
     }
 
-    public clickBtnSelectCharacter(): void {
+    public clickBtnSelectCharacter(event, customEventData): void {
+        if (DrawController.instance.indexWaypoint > 0) return;
         this.tweenHand.stop();
+        switch(customEventData){
+            case '0': {
+                this.character.spriteFrame = this.arrCharacter[0];
+                DrawController.instance.setDataCharacter1();
+                this.hand.setPosition(cc.v3(this.violetBtn.position.x, this.mode.y, 0));
+                break;
+            }
+            case '1': {
+                this.character.spriteFrame = this.arrCharacter[1];
+                DrawController.instance.setDataCharacter2();
+                this.hand.setPosition(cc.v3(this.yellowBtn.position.x, this.mode.y, 0));
+                break;
+            }
+            case '2': {
+                this.character.spriteFrame = this.arrCharacter[2];
+                DrawController.instance.setDataCharacter3();
+                this.hand.setPosition(cc.v3(this.blueBtn.position.x, this.mode.y, 0));
+                break;
+            }
+        }
     }
 }
