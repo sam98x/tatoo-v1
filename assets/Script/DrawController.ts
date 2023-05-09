@@ -125,6 +125,8 @@ export default class DrawController extends cc.Component {
     }
 
     private handleEventTouchStart(): void {
+        if (!GameController.instance.isSelectedCharacter) return;
+        GameController.instance.nodeTapToPlay.active = false;
         this.isStartingDraw = true;
         GameController.instance.tweenHand.stop();
         GameController.instance.playAudioPen();
@@ -153,6 +155,7 @@ export default class DrawController extends cc.Component {
     }
 
     private handleEventTouchEnd(): void {
+        if (!GameController.instance.isSelectedCharacter) return;
         console.log('end');
         this.isStartingDraw = false;
         GameController.instance.stopAudioPen();
@@ -343,7 +346,7 @@ export default class DrawController extends cc.Component {
     }
 
     update (dt) {
-        if (this.isStartingDraw) {
+        if (this.isStartingDraw && GameController.instance.isSelectedCharacter) {
             this.updateDraw2();
         }
     }

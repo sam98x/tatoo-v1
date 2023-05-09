@@ -55,8 +55,11 @@ export default class GameController extends cc.Component {
     @property(cc.Sprite)
     character: cc.Sprite = null;
 
-    // @property(cc.Node)
-    // nodeTapToPlay: cc.Node = null;
+    @property(cc.Node)
+    btnClickStep2: cc.Node = null;
+
+    @property(cc.Node)
+    nodeTapToPlay: cc.Node = null;
 
     public tweenHand: cc.Tween = null;
     private clickTag: string = 'https://play.google.com/store/apps/details?id=com.inwave.tattooasmr.ink.drawing.game';
@@ -66,19 +69,19 @@ export default class GameController extends cc.Component {
     public isOpenLink: boolean = false;
     public tweenTap: cc.Tween = null;
     public isPlayAudioPen: boolean = false;
+    public isSelectedCharacter: boolean = false;
+    public tweenBtnStep2: cc.Tween = null;
 
     onLoad() {
         GameController.instance = this;
         // this.playAudioBg();
 
-       /*  this.tweenTap = cc.tween(this.nodeTapToPlay)
+        this.tweenTap = cc.tween(this.nodeTapToPlay)
             .repeatForever(
                 cc.tween(this.nodeTapToPlay)
                     .to(0.4, { opacity: 0 })
                     .to(0.4, { opacity: 255 })
-            ) */
-            
-        // this.tweenTap.start();
+            )
 
         this.hand.setPosition(this.violetBtn.position.x, this.mode.y);
         this.tweenHand = cc.tween(this.hand)
@@ -104,6 +107,13 @@ export default class GameController extends cc.Component {
                     .delay(1)
             )
         this.tweenHand.start();
+
+        this.tweenBtnStep2 = cc.tween(this.btnClickStep2)
+                                .repeatForever(
+                                    cc.tween(this.btnClickStep2)
+                                        .to(0.5, {scale: 1.1})
+                                        .to(0.5, {scale: 1})
+                                )
     }
 
     public openAdUrl(): void {
@@ -153,7 +163,9 @@ export default class GameController extends cc.Component {
     public activeStep2(value: boolean): void {
         this.isOpenLink = false;
         this.step2.active = value;
-        this.tweenHand.start();
+        // this.tweenHand.start();
+        this.tweenBtnStep2.start();
+
     }
 
     public clickBtnPlay(): void {
@@ -204,6 +216,10 @@ export default class GameController extends cc.Component {
 
     public clickBtnSelectCharacter(event, customEventData): void {
         if (DrawController.instance.indexWaypoint > 0) return;
+        this.isSelectedCharacter = true;
+        this.nodeTapToPlay.active = true;
+        this.hand.active = false;
+        this.tweenTap.start();
         this.tweenHand.stop();
         switch(customEventData){
             case '0': {
