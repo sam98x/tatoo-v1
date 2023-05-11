@@ -1,6 +1,6 @@
 {
   "ver": "2.3.5",
-  "uuid": "5fdd04b4-1366-4ad3-8baf-a3a8004717d6",
+  "uuid": "8c2dd96e-9319-4dc6-ae8a-ada778864f9c",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -11,10 +11,10 @@
   "height": 1280,
   "platformSettings": {},
   "subMetas": {
-    "photo_2023-04-18_15-00-45": {
+    "photo_2023-05-10_17-54-20": {
       "ver": "1.0.4",
-      "uuid": "25004af5-4125-4bf4-ae4b-9cb4aff575aa",
-      "rawTextureUuid": "5fdd04b4-1366-4ad3-8baf-a3a8004717d6",
+      "uuid": "d3123dae-832c-4260-ac3c-d7804727cef8",
+      "rawTextureUuid": "8c2dd96e-9319-4dc6-ae8a-ada778864f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

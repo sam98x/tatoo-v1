@@ -1,5 +1,5 @@
 import GameController from './GameController';
-import { SkullCap, Duck, Roblox } from './Waypoint/Index_WayPoint';
+import { SkullCap, Duck, Roblox, Test } from './Waypoint/Index_WayPoint';
 
 const { ccclass, property } = cc._decorator;
 
@@ -83,7 +83,13 @@ export default class DrawController extends cc.Component {
         }
 
         this.startDraw();
-        // this.setDataCharacter1();
+
+        // test 
+        this.dataWayPoint = Test;
+
+        this.numWay = this.dataWayPoint.length;
+        this.arrWaypoint = this.dataWayPoint[0];
+        this.initGraphic(true);
     }
 
     private pauseGame(): void {
@@ -109,6 +115,18 @@ export default class DrawController extends cc.Component {
         this.numWay = Roblox.length;
         this.arrWaypoint = this.dataWayPoint[0];
         this.initGraphic(true);
+
+/*         this.dataWayPoint = Test;
+        this.numWay = this.dataWayPoint.length;
+        this.arrWaypoint = this.dataWayPoint[0];
+        console.log(this.arrWaypoint);
+        for (let i = 0; i < this.arrWaypoint.length; i++) {
+            this.arrWaypoint[i].x *= 99;
+            this.arrWaypoint[i].y *= 90;
+            this.arrWaypoint[i].x -= 95;
+            this.arrWaypoint[i].y -= 145;
+        }
+        this.initGraphic(true); */
     }
 
     private showGame(): void {

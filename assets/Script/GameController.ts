@@ -106,6 +106,7 @@ export default class GameController extends cc.Component {
                     })
                     .delay(1)
             )
+
         this.tweenHand.start();
 
         this.tweenBtnStep2 = cc.tween(this.btnClickStep2)
