@@ -83,7 +83,7 @@ export default class GameController extends cc.Component {
                     .to(0.4, { opacity: 0 })
                     .to(0.4, { opacity: 255 })
             )
-
+        console.log(this.violetBtn.width)
         this.tweenScale = (node: cc.Node, scale: number) => cc.tween(node)
                             .to(0.1, {scale: scale});
 
@@ -91,7 +91,7 @@ export default class GameController extends cc.Component {
         this.tweenHand = cc.tween(this.hand)
             .repeatForever(
                 cc.tween(this.hand)
-                    .to(0.5, { position: cc.v3(this.violetBtn.position.x, this.mode.y, 0) })
+                    .to(0.5, { position: cc.v3(this.violetBtn.position.x + 50, this.mode.y, 0) })
                     .call(() => {
                         this.tweenScale(this.violetBtn.children[0], 1.2).start();
                         this.tweenScale(this.yellowBtn.children[0], 1).start();
@@ -101,7 +101,7 @@ export default class GameController extends cc.Component {
                         DrawController.instance.setDataCharacter1();
                     })
                     .delay(1)
-                    .to(0.5, { position: cc.v3(this.yellowBtn.position.x, this.mode.y, 0) })
+                    .to(0.5, { position: cc.v3(this.yellowBtn.position.x + 50, this.mode.y, 0) })
                     .call(() => {
                         this.tweenScale(this.violetBtn.children[0], 1).start();
                         this.tweenScale(this.yellowBtn.children[0], 1.2).start();
@@ -111,7 +111,7 @@ export default class GameController extends cc.Component {
                         DrawController.instance.setDataCharacter2();
                     })
                     .delay(1)
-                    .to(0.5, { position: cc.v3(this.blueBtn.position.x, this.mode.y, 0) })
+                    .to(0.5, { position: cc.v3(this.blueBtn.position.x + 50, this.mode.y, 0) })
                     .call(() => {
                         this.tweenScale(this.violetBtn.children[0], 1).start();
                         this.tweenScale(this.yellowBtn.children[0], 1).start();
