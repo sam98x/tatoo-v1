@@ -71,6 +71,7 @@ export default class GameController extends cc.Component {
     public isPlayAudioPen: boolean = false;
     public isSelectedCharacter: boolean = false;
     public tweenBtnStep2: cc.Tween = null;
+    private tweenScale: Function = null;
 
     onLoad() {
         GameController.instance = this;
@@ -83,24 +84,39 @@ export default class GameController extends cc.Component {
                     .to(0.4, { opacity: 255 })
             )
 
+        this.tweenScale = (node: cc.Node, scale: number) => cc.tween(node)
+                            .to(0.1, {scale: scale});
+
         this.hand.setPosition(this.violetBtn.position.x, this.mode.y);
         this.tweenHand = cc.tween(this.hand)
             .repeatForever(
                 cc.tween(this.hand)
                     .to(0.5, { position: cc.v3(this.violetBtn.position.x, this.mode.y, 0) })
                     .call(() => {
+                        this.tweenScale(this.violetBtn.children[0], 1.2).start();
+                        this.tweenScale(this.yellowBtn.children[0], 1).start();
+                        this.tweenScale(this.blueBtn.children[0], 1).start();
+
                         this.character.spriteFrame = this.arrCharacter[0];
                         DrawController.instance.setDataCharacter1();
                     })
                     .delay(1)
                     .to(0.5, { position: cc.v3(this.yellowBtn.position.x, this.mode.y, 0) })
                     .call(() => {
+                        this.tweenScale(this.violetBtn.children[0], 1).start();
+                        this.tweenScale(this.yellowBtn.children[0], 1.2).start();
+                        this.tweenScale(this.blueBtn.children[0], 1).start();
+
                         this.character.spriteFrame = this.arrCharacter[1];
                         DrawController.instance.setDataCharacter2();
                     })
                     .delay(1)
                     .to(0.5, { position: cc.v3(this.blueBtn.position.x, this.mode.y, 0) })
                     .call(() => {
+                        this.tweenScale(this.violetBtn.children[0], 1).start();
+                        this.tweenScale(this.yellowBtn.children[0], 1).start();
+                        this.tweenScale(this.blueBtn.children[0], 1.2).start();
+
                         this.character.spriteFrame = this.arrCharacter[2];
                         DrawController.instance.setDataCharacter3();
                     })
@@ -224,18 +240,30 @@ export default class GameController extends cc.Component {
         this.tweenHand.stop();
         switch(customEventData){
             case '0': {
+                this.tweenScale(this.violetBtn.children[0], 1.2).start();
+                this.tweenScale(this.yellowBtn.children[0], 1).start();
+                this.tweenScale(this.blueBtn.children[0], 1).start();
+
                 this.character.spriteFrame = this.arrCharacter[0];
                 DrawController.instance.setDataCharacter1();
                 this.hand.setPosition(cc.v3(this.violetBtn.position.x, this.mode.y, 0));
                 break;
             }
             case '1': {
+                this.tweenScale(this.violetBtn.children[0], 1).start();
+                this.tweenScale(this.yellowBtn.children[0], 1.2).start();
+                this.tweenScale(this.blueBtn.children[0], 1).start();
+
                 this.character.spriteFrame = this.arrCharacter[1];
                 DrawController.instance.setDataCharacter2();
                 this.hand.setPosition(cc.v3(this.yellowBtn.position.x, this.mode.y, 0));
                 break;
             }
             case '2': {
+                this.tweenScale(this.violetBtn.children[0], 1).start();
+                this.tweenScale(this.yellowBtn.children[0], 1).start();
+                this.tweenScale(this.blueBtn.children[0], 1.2).start();
+
                 this.character.spriteFrame = this.arrCharacter[2];
                 DrawController.instance.setDataCharacter3();
                 this.hand.setPosition(cc.v3(this.blueBtn.position.x, this.mode.y, 0));

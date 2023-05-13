@@ -32,7 +32,8 @@ base64PrefixList = {
   '.jpg' : 'data:image/jpeg;base64,',
   '.mp3' : '',
   '.ttf' : '',
-  '.plist' : 'data:text/plist;base64,'
+  '.plist' : 'data:text/plist;base64,',
+  '.bin': ''
 }
 
 def read_in_chunks(filePath):
