@@ -1,5 +1,4 @@
 Requirement:
-
 Cocos Creator 2.4.3
 Install python3
 Install module simplejson,tinify ( pip3 install simplejson, sudo pip3 install tinify)
